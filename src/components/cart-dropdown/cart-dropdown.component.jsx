@@ -1,7 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import CustomButton from '../custom-button/custom-button.component';
 import styled from 'styled-components';
-
+import CartItem from '../cart-item/cart-item.component';
 const Cont = styled.div`
 	position: absolute;
 	width: 240px;
@@ -18,19 +19,28 @@ const Cont = styled.div`
 		margin-top: auto;
 	}
 `;
-const CartItems = styled.div`cart-items {
-    height: 240px;
-    display: flex;
-    flex-direction: column;
-    overflow: scroll;`;
+const CartItemCont = styled.div`
+	height: 240px;
+	display: flex;
+	flex-direction: column;
+	overflow: scroll;
+`;
 
-const CartDropDown = () => {
+const CartDropDown = ({ cartItems }) => {
 	return (
 		<Cont>
-			<CartItems />
+			<CartItemCont>
+				{cartItems.map((item, idx) => (
+					<CartItem key={idx} item={item} />
+				))}
+			</CartItemCont>
 			<CustomButton>GO TO CHECKOUT</CustomButton>
 		</Cont>
 	);
 };
 
-export default CartDropDown;
+const mapStateToProps = ({ cart: { cartItems } }) => ({
+	cartItems,
+});
+
+export default connect(mapStateToProps)(CartDropDown);
